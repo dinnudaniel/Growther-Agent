@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ account_name }} — Growther Agent</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="dashboard-page" data-platform="{{ platform }}" data-platform-color="{{ info.color }}">
+
+  <!-- ── SIDEBAR ──────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">Growther</span>
+    </div>
+
+    <!-- Connected Account -->
+    <div class="sidebar-account" style="--platform-color: {{ info.color }};">
+      <div class="account-platform-icon platform-icon {{ platform }}-icon">
+        {% if platform == "youtube" %}
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+          <path d="M23.5 6.2a3.1 3.1 0 0 0-2.2-2.2C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.3.5A3.1 3.1 0 0 0 .5 6.2C0 8 0 12 0 12s0 4 .5 5.8a3.1 3.1 0 0 0 2.2 2.2C4.5 20.5 12 20.5 12 20.5s7.5 0 9.3-.5a3.1 3.1 0 0 0 2.2-2.2C24 16 24 12 24 12s0-4-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/>
+        </svg>
+        {% elif platform == "instagram" %}
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+        {% elif platform == "tiktok" %}
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.25 8.25 0 0 0 4.83 1.56V6.79a4.85 4.85 0 0 1-1.06-.1z"/>
+        </svg>
+        {% elif platform == "twitter" %}
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        {% elif platform == "facebook" %}
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+        {% endif %}
+      </div>
+      <div class="account-info">
+        <div class="account-name">{{ account_name }}</div>
+        <div class="account-platform">{{ info.label }}</div>
+      </div>
+      <div class="account-status connected">● Live</div>
+    </div>
+
+    <!-- Quick action suggestions -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Quick Asks</div>
+      <div class="quick-actions">
+        <button class="quick-action-btn" data-message="Give me 5 specific video ideas for this week that would get the most views in my niche.">
+          💡 Video ideas
+        </button>
+        <button class="quick-action-btn" data-message="What posting schedule should I follow to grow the fastest on this platform right now?">
+          🗓 Best schedule
+        </button>
+        <button class="quick-action-btn" data-message="Write me 3 viral hook scripts for my next video. Make them punchy and specific to my niche.">
+          🔥 Viral hooks
+        </button>
+        <button class="quick-action-btn" data-message="What revenue can I earn right now before hitting the official monetization threshold? List all options.">
+          💰 Earn now
+        </button>
+        <button class="quick-action-btn" data-message="Analyze my engagement rate and tell me how to improve it in the next 30 days.">
+          📊 Boost engagement
+        </button>
+        <button class="quick-action-btn" data-message="What are the top 3 things I should do this week to grow the fastest?">
+          🚀 Top priorities
+        </button>
+      </div>
+    </div>
+
+    <!-- Disconnect -->
+    <div class="sidebar-footer">
+      <button id="disconnect-btn" class="disconnect-btn">
+        ← Switch Platform
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CHAT AREA ────────────────────────────────────────────── -->
+  <main class="chat-main">
+    <div class="chat-header">
+      <div class="chat-header-title">
+        <span class="chat-status-dot"></span>
+        Growther Agent
+      </div>
+      <div class="chat-header-subtitle">Analyzing your {{ info.label }} account with Claude Opus 4.6</div>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chat-messages">
+      <!-- Initial loading state -->
+      <div class="message agent-message loading-message" id="loading-message">
+        <div class="message-avatar">⚡</div>
+        <div class="message-content">
+          <div class="typing-indicator">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="loading-text">Analyzing your {{ info.label }} account…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input area -->
+    <div class="chat-input-area">
+      <div class="chat-input-wrapper">
+        <textarea
+          id="chat-input"
+          class="chat-input"
+          placeholder="Ask anything about growing your {{ info.label }} account…"
+          rows="1"
+          disabled
+        ></textarea>
+        <button id="send-btn" class="send-btn" disabled style="--platform-color: {{ info.color }};">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+      <div class="chat-hint">Press Enter to send · Shift+Enter for new line</div>
+    </div>
+  </main>
+
+  <!-- Hidden data for JS -->
+  <script>
+    window.GROWTHER = {
+      platform: "{{ platform }}",
+      platformColor: "{{ info.color }}",
+      platformLabel: "{{ info.label }}",
+    };
+  </script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

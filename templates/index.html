@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Growther Agent — Social Media Growth Coach</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="home-page">
+
+  <!-- ── NAV ────────────────────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">Growther</span>
+    </div>
+    <div class="nav-tagline">AI-Powered Social Growth Coach</div>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Powered by Claude Opus 4.6</div>
+      <h1 class="hero-title">
+        Grow smarter.<br/>
+        <span class="gradient-text">Monetize faster.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Connect your social media account and get a personalized AI growth strategy —
+        content calendar, monetization roadmap, viral hooks, and SEO optimization.
+        All in one place.
+      </p>
+      <a href="#platforms" class="cta-button">
+        Choose Your Platform
+        <span class="cta-arrow">↓</span>
+      </a>
+    </div>
+
+    <!-- floating stats cards -->
+    <div class="hero-cards">
+      <div class="stat-card">
+        <div class="stat-icon">📈</div>
+        <div class="stat-label">Growth Analysis</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🗓</div>
+        <div class="stat-label">Content Calendar</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-label">Monetization Plan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-label">Viral Hooks</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PLATFORM PICKER ────────────────────────────────────────────── -->
+  <section id="platforms" class="platforms-section">
+    <div class="section-header">
+      <h2>Which platform do you want to grow on?</h2>
+      <p>Select your platform to connect and get your personalized growth plan.</p>
+    </div>
+
+    <div class="platforms-grid">
+
+      <!-- YouTube -->
+      <a href="/connect/youtube" class="platform-card" data-platform="youtube">
+        <div class="platform-card-glow" style="--glow-color: #FF0000;"></div>
+        <div class="platform-icon youtube-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36">
+            <path d="M23.5 6.2a3.1 3.1 0 0 0-2.2-2.2C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.3.5A3.1 3.1 0 0 0 .5 6.2C0 8 0 12 0 12s0 4 .5 5.8a3.1 3.1 0 0 0 2.2 2.2C4.5 20.5 12 20.5 12 20.5s7.5 0 9.3-.5a3.1 3.1 0 0 0 2.2-2.2C24 16 24 12 24 12s0-4-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/>
+          </svg>
+        </div>
+        <div class="platform-info">
+          <h3>YouTube</h3>
+          <p>Reach 1K subs + 4K watch hours for YPP monetization</p>
+          <div class="platform-features">
+            <span class="feature-tag">Ad Revenue</span>
+            <span class="feature-tag">Memberships</span>
+            <span class="feature-tag">Shorts</span>
+          </div>
+        </div>
+        <div class="platform-cta">
+          Connect <span>→</span>
+        </div>
+      </a>
+
+      <!-- Instagram -->
+      <a href="/connect/instagram" class="platform-card" data-platform="instagram">
+        <div class="platform-card-glow" style="--glow-color: #E1306C;"></div>
+        <div class="platform-icon instagram-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </div>
+        <div class="platform-info">
+          <h3>Instagram</h3>
+          <p>Build to 10K followers for brand deals & Creator Marketplace</p>
+          <div class="platform-features">
+            <span class="feature-tag">Reels</span>
+            <span class="feature-tag">Brand Deals</span>
+            <span class="feature-tag">Affiliate</span>
+          </div>
+        </div>
+        <div class="platform-cta">
+          Connect <span>→</span>
+        </div>
+      </a>
+
+      <!-- TikTok -->
+      <a href="/connect/tiktok" class="platform-card" data-platform="tiktok">
+        <div class="platform-card-glow" style="--glow-color: #69C9D0;"></div>
+        <div class="platform-icon tiktok-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.25 8.25 0 0 0 4.83 1.56V6.79a4.85 4.85 0 0 1-1.06-.1z"/>
+          </svg>
+        </div>
+        <div class="platform-info">
+          <h3>TikTok</h3>
+          <p>Reach 10K followers for Creator Fund & LIVE Gifting at 1K</p>
+          <div class="platform-features">
+            <span class="feature-tag">Creator Fund</span>
+            <span class="feature-tag">LIVE Gifts</span>
+            <span class="feature-tag">Series</span>
+          </div>
+        </div>
+        <div class="platform-cta">
+          Connect <span>→</span>
+        </div>
+      </a>
+
+      <!-- Twitter / X -->
+      <a href="/connect/twitter" class="platform-card" data-platform="twitter">
+        <div class="platform-card-glow" style="--glow-color: #1DA1F2;"></div>
+        <div class="platform-icon twitter-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </div>
+        <div class="platform-info">
+          <h3>Twitter / X</h3>
+          <p>Hit 500 followers + 5M impressions for Ads Revenue Sharing</p>
+          <div class="platform-features">
+            <span class="feature-tag">Revenue Share</span>
+            <span class="feature-tag">Subscriptions</span>
+            <span class="feature-tag">Threads</span>
+          </div>
+        </div>
+        <div class="platform-cta">
+          Connect <span>→</span>
+        </div>
+      </a>
+
+      <!-- Facebook -->
+      <a href="/connect/facebook" class="platform-card" data-platform="facebook">
+        <div class="platform-card-glow" style="--glow-color: #1877F2;"></div>
+        <div class="platform-icon facebook-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </div>
+        <div class="platform-info">
+          <h3>Facebook</h3>
+          <p>Reach 10K followers for in-stream ads and Stars on Live</p>
+          <div class="platform-features">
+            <span class="feature-tag">In-stream Ads</span>
+            <span class="feature-tag">Stars</span>
+            <span class="feature-tag">Fan Subs</span>
+          </div>
+        </div>
+        <div class="platform-cta">
+          Connect <span>→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ────────────────────────────────────────────────── -->
+  <section class="how-it-works">
+    <div class="section-header">
+      <h2>How it works</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Connect your account</h3>
+        <p>Enter your current stats — followers, engagement, and posting frequency.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>AI analyzes your data</h3>
+        <p>Growther Agent runs a deep analysis using Claude Opus 4.6 with real monetization thresholds.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Get your roadmap</h3>
+        <p>Receive a personalized growth plan, content calendar, and monetization timeline.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Chat & refine</h3>
+        <p>Ask follow-up questions, request hook scripts, SEO help, and more — all in real time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <p>⚡ Growther Agent &nbsp;·&nbsp; Powered by Claude Opus 4.6</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

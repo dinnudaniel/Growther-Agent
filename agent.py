@@ -1,8 +1,8 @@
 """
-Growther Agent — YouTube Monetization AI Assistant
+Growther Agent — Multi-Platform Social Media Growth Coach
 
-Uses Claude Opus 4.6 with adaptive thinking and tool use to analyze a
-YouTube channel and produce a personalized monetization strategy.
+Uses Claude Opus 4.6 with adaptive thinking and tool use to analyze
+any social media account and produce a personalized monetization strategy.
 """
 
 import json
@@ -14,33 +14,100 @@ import anthropic
 from tools import TOOLS, execute_tool
 
 # ---------------------------------------------------------------------------
-# System prompt
+# Platform-specific system prompt additions
 # ---------------------------------------------------------------------------
 
-SYSTEM_PROMPT = """You are the **Growther Agent**, an expert YouTube growth strategist and monetization coach powered by Claude.
+PLATFORM_CONTEXTS = {
+    "youtube": """
+## Platform: YouTube
+You are analyzing a YouTube channel. Key monetization thresholds:
+- **YPP Long-form path**: 1,000 subscribers + 4,000 watch hours (last 12 months)
+- **YPP Shorts path**: 1,000 subscribers + 10,000,000 Shorts views (last 90 days)
+- **Channel Memberships**: 500 subscribers + YPP
+- **Merch Shelf**: 10,000 subscribers
 
-Your mission is to help YouTube creators reach the YouTube Partner Program (YPP) monetization thresholds as quickly as possible, and to build a sustainable channel business beyond ads.
+Focus on: watch time, CTR, subscriber growth rate, video SEO, thumbnails, upload consistency.
+Use `analyze_monetization_gap` first, then `build_monetization_roadmap`, `generate_content_calendar`, `optimize_video_metadata`, and `suggest_viral_hooks`.
+""",
+    "instagram": """
+## Platform: Instagram
+You are analyzing an Instagram account. Key monetization thresholds:
+- **Creator Marketplace (brand deals)**: 10,000 followers (recommended minimum)
+- **Instagram Subscriptions**: varies by region
+- **Badges in Live**: 10,000 followers
+- **Affiliate tools**: available from any follower count
+- **Reel bonuses**: invite-only program
 
-## YouTube Partner Program Requirements (as of 2024)
-- **Long-form path**: 1,000 subscribers + 4,000 valid public watch hours in the last 12 months
-- **Shorts path**: 1,000 subscribers + 10,000,000 valid public Shorts views in the last 90 days
+Key metrics to focus on: follower growth rate, engagement rate (likes+comments / followers × 100),
+Reels plays, Story completion rate, reach.
+A healthy engagement rate is 3–6% for accounts under 100K followers.
+Use `analyze_instagram_profile`, `generate_platform_content_strategy`, and `suggest_viral_hooks`.
+""",
+    "tiktok": """
+## Platform: TikTok
+You are analyzing a TikTok account. Key monetization thresholds:
+- **Creator Fund**: 10,000 followers + 100,000 views in last 30 days + 18+ years old
+- **TikTok LIVE Gifting**: 1,000 followers + 16+ years old
+- **TikTok Series (paid content)**: 10,000 followers
+- **Creator Marketplace brand deals**: typically 10,000–50,000 followers
+
+Key metrics: followers, total video views, average views per video, completion rate,
+engagement rate (likes + comments + shares / views × 100), posting frequency.
+TikTok's algorithm heavily rewards consistency (posting 1–3x/day) and niche clarity.
+Use `analyze_tiktok_profile`, `generate_platform_content_strategy`, and `suggest_viral_hooks`.
+""",
+    "twitter": """
+## Platform: Twitter / X
+You are analyzing a Twitter / X account. Key monetization thresholds:
+- **X Premium revenue sharing (Ads Revenue)**: 500 followers + 5,000,000 impressions in last 3 months + X Premium subscription
+- **X Subscriptions (paid followers)**: available to eligible creators
+- **Super Follows**: merged into Subscriptions
+
+Key metrics: followers, monthly impressions, engagement rate (likes + replies + retweets / impressions),
+posting frequency, reply engagement. Twitter rewards topical authority and consistent daily posting.
+Use `analyze_twitter_profile`, `generate_platform_content_strategy`, and `suggest_viral_hooks`.
+""",
+    "facebook": """
+## Platform: Facebook
+You are analyzing a Facebook page or profile. Key monetization thresholds:
+- **In-stream ads (videos)**: 10,000 followers + 600,000 total minutes watched in last 60 days + 5+ active videos
+- **Facebook Stars (Live)**: 1,000 followers + meet Partner Monetization Policies
+- **Fan Subscriptions**: 10,000 followers OR 250+ returning weekly viewers
+- **Reels bonuses**: invite-only
+
+Key metrics: page followers, organic reach, post engagement rate (reactions + comments + shares / reach × 100),
+video minutes watched, live stream viewers, posting consistency.
+Use `analyze_facebook_page`, `generate_platform_content_strategy`, and `suggest_viral_hooks`.
+""",
+}
+
+BASE_SYSTEM_PROMPT = """You are the **Growther Agent**, an expert social media growth strategist and monetization coach powered by Claude.
+
+Your mission is to help creators on ANY social media platform grow their audience and unlock monetization as quickly as possible — with data-driven, actionable strategies tailored to each platform's algorithm and requirements.
 
 ## Your Approach
-1. **Diagnose first**: Use `analyze_monetization_gap` to understand exactly where the channel stands and what the bottleneck is.
-2. **Strategize**: Use `build_monetization_roadmap` to create a step-by-step plan tailored to the creator's capacity and strengths.
-3. **Plan content**: Use `generate_content_calendar` to produce a concrete 4-week upload plan.
-4. **Optimize discoverability**: Use `optimize_video_metadata` for SEO-optimized titles, descriptions, and tags.
-5. **Maximize retention**: Use `suggest_viral_hooks` to craft compelling openings that keep viewers watching.
+1. **Diagnose first**: Use the platform analysis tool to understand exactly where the account stands.
+2. **Strategize**: Build a step-by-step roadmap tailored to the creator's content capacity and strengths.
+3. **Plan content**: Generate a concrete 4-week content calendar with real video/post ideas.
+4. **Optimize discoverability**: Provide SEO-optimized titles, captions, hashtags relevant to the platform.
+5. **Maximize retention**: Craft compelling hooks that keep the audience engaged.
 
 ## Communication Style
-- Be encouraging and specific — creators need actionable advice, not vague tips.
-- Always cite the data (subscriber counts, watch hours, percentages) when making recommendations.
-- Prioritize the **bottleneck metric** — whatever is furthest from the goal deserves the most attention.
-- Point out early revenue opportunities (affiliate links, Patreon) the creator can pursue BEFORE reaching YPP.
-- Use clear headings, bullet points, and emojis sparingly to make outputs scannable.
-- When you generate a content calendar or roadmap, be specific: include actual video title ideas, not just categories.
+- Be encouraging, specific, and data-driven.
+- Always reference the creator's actual numbers when making recommendations.
+- Highlight the **bottleneck metric** — whatever is furthest from the monetization goal.
+- Call out early revenue opportunities available BEFORE reaching official monetization thresholds (brand deals, affiliate links, digital products, Patreon).
+- Use clear headings and bullet points to make outputs easy to scan.
+- When generating content ideas, be SPECIFIC — actual titles and angles, not generic categories.
 
-Think carefully and use your tools to provide the most precise, data-driven advice possible."""
+Think deeply about each creator's unique situation and give advice that would genuinely move the needle for them."""
+
+
+def get_system_prompt(platform: str | None = None) -> str:
+    prompt = BASE_SYSTEM_PROMPT
+    if platform and platform in PLATFORM_CONTEXTS:
+        prompt += "\n" + PLATFORM_CONTEXTS[platform]
+    return prompt
 
 
 # ---------------------------------------------------------------------------
@@ -48,13 +115,20 @@ Think carefully and use your tools to provide the most precise, data-driven advi
 # ---------------------------------------------------------------------------
 
 class GrowtherAgent:
-    """Agentic loop that drives Claude to analyze and advise on YouTube monetization."""
+    """Agentic loop driving Claude to analyze and advise on social media growth."""
 
-    def __init__(self, api_key: str | None = None):
+    def __init__(self, api_key: str | None = None, conversation: list | None = None):
         self.client = anthropic.Anthropic(
             api_key=api_key or os.environ.get("ANTHROPIC_API_KEY")
         )
-        self.conversation: list[dict] = []
+        self.conversation: list[dict] = conversation or []
+        self.platform: str | None = None
+
+    def set_platform(self, platform: str):
+        self.platform = platform.lower()
+
+    def get_conversation(self) -> list[dict]:
+        return self.conversation
 
     # ------------------------------------------------------------------
     # Core agentic loop
@@ -67,48 +141,39 @@ class GrowtherAgent:
         Yields text chunks as they arrive.
         """
         self.conversation.append({"role": "user", "content": user_message})
+        system = get_system_prompt(self.platform)
 
         while True:
-            # Stream the response with adaptive thinking enabled
             with self.client.messages.stream(
                 model="claude-opus-4-6",
                 max_tokens=8192,
                 thinking={"type": "adaptive"},
-                system=SYSTEM_PROMPT,
+                system=system,
                 tools=TOOLS,
                 messages=self.conversation,
             ) as stream:
-                collected_content = []
-                current_text = ""
-
                 for event in stream:
-                    # Stream text deltas to the caller
                     if (
                         event.type == "content_block_delta"
                         and event.delta.type == "text_delta"
                     ):
-                        current_text += event.delta.text
                         yield event.delta.text
 
-                # Collect the full response
                 final_message = stream.get_final_message()
 
-            # Append the full assistant response (including tool_use blocks) to history
+            # Append the full assistant response (with tool_use blocks) to history
             self.conversation.append(
                 {"role": "assistant", "content": final_message.content}
             )
 
-            # If Claude is done, break out of the loop
             if final_message.stop_reason == "end_turn":
                 break
 
-            # If Claude called tools, execute them and loop
             if final_message.stop_reason == "tool_use":
                 tool_results = []
-
                 for block in final_message.content:
                     if block.type == "tool_use":
-                        yield f"\n\n> **[Tool: {block.name}]** Running analysis...\n\n"
+                        yield f"\n\n_[Running {block.name}...]_\n\n"
                         result_str = execute_tool(block.name, block.input)
                         tool_results.append(
                             {
@@ -117,23 +182,19 @@ class GrowtherAgent:
                                 "content": result_str,
                             }
                         )
-
-                # Feed tool results back to Claude
                 self.conversation.append(
                     {"role": "user", "content": tool_results}
                 )
-                # Continue the loop so Claude can process the results
                 continue
 
-            # Any other stop reason — just break
             break
 
     def reset(self):
-        """Clear conversation history to start fresh."""
         self.conversation = []
+        self.platform = None
 
     # ------------------------------------------------------------------
-    # Convenience one-shot methods
+    # One-shot analysis methods (used by CLI)
     # ------------------------------------------------------------------
 
     def analyze_channel(
@@ -151,17 +212,13 @@ class GrowtherAgent:
         target_audience: str = "",
         content_strengths: list[str] | None = None,
     ) -> str:
-        """
-        Run a full channel analysis and return the complete response as a string.
-        Builds a structured prompt so Claude immediately knows what to do.
-        """
+        self.set_platform("youtube")
         shorts_info = ""
         if uses_shorts:
             shorts_info = (
                 f"\n- **Shorts views (last 90 days)**: {shorts_views_90d:,}"
                 f"\n- **Weekly Shorts views**: {weekly_shorts_views:,}"
             )
-
         prompt = f"""Please do a complete monetization analysis and growth plan for my YouTube channel.
 
 ## Channel Details
@@ -183,7 +240,4 @@ Please:
 4. Give me SEO optimization tips for my next video.
 5. Suggest viral hooks for my best content opportunity.
 """
-        result_parts = []
-        for chunk in self.chat(prompt):
-            result_parts.append(chunk)
-        return "".join(result_parts)
+        return "".join(self.chat(prompt))
